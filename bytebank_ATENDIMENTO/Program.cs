@@ -1,4 +1,7 @@
-﻿using bytebank_ATENDIMENTO.bytebank.Atendimento;
+﻿using bytebank.Modelos.Conta;
+using bytebank_ATENDIMENTO.bytebank.Atendimento;
+using bytebank_ATENDIMENTO.bytebank.Util;
+
 Console.WriteLine("Boas Vindas ao ByteBank, Atendimento.");
 //new ByteBankAtendimento().AtendimentoCliente();
 //TestaArrayInt();
@@ -84,12 +87,12 @@ void TestaMediana(Array array)
 //    Console.WriteLine(valores[i]);
 //}
 
-double[] array = new double[3];
-array[0] = 5;
-array[1] = 10;
-array[2] = 6;
+//double[] array = new double[3];
+//array[0] = 5;
+//array[1] = 10;
+//array[2] = 6;
 
-Console.WriteLine(CalculaMedia(array));
+//Console.WriteLine(CalculaMedia(array));
 double CalculaMedia(double[] array)
 {
     double acumulador = 0;
@@ -106,4 +109,28 @@ double CalculaMedia(double[] array)
 
     double media = acumulador / array.Length;
     return media;
+}
+
+TestaArrayDeContasCorrentes();
+void TestaArrayDeContasCorrentes()
+{
+    ListaDeContasCorrentes listaDeContas = new ListaDeContasCorrentes();
+    //listaDeContas.Adicionar(new ContaCorrente(874, "123"));
+    //listaDeContas.Adicionar(new ContaCorrente(874, "321"));
+    //listaDeContas.Adicionar(new ContaCorrente(874, "132"));
+    //listaDeContas.Adicionar(new ContaCorrente(874, "132"));
+    //listaDeContas.Adicionar(new ContaCorrente(874, "132"));
+    //listaDeContas.Adicionar(new ContaCorrente(874, "132"));
+    ContaCorrente joao = new ContaCorrente(123, "123");
+    joao.Saldo = 10;
+    ContaCorrente amanda = new ContaCorrente(123, "123");
+    amanda.Saldo = 100;
+    ContaCorrente julia = new ContaCorrente(123, "123");
+    julia.Saldo = 5000;
+
+    listaDeContas.Adicionar(joao);
+    listaDeContas.Adicionar(amanda);
+    listaDeContas.Adicionar(julia);
+
+    Console.WriteLine(listaDeContas.VerificarSaldo());
 }
