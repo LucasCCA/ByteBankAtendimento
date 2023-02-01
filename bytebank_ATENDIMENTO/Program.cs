@@ -1,8 +1,11 @@
 ﻿using bytebank.Modelos.Conta;
 using bytebank_ATENDIMENTO.bytebank.Atendimento;
 using bytebank_ATENDIMENTO.bytebank.Util;
+using System.Collections;
 
 Console.WriteLine("Boas Vindas ao ByteBank, Atendimento.");
+
+#region Exemplos Arrays em C#
 //new ByteBankAtendimento().AtendimentoCliente();
 //TestaArrayInt();
 //TestaBuscarPalavra();
@@ -111,26 +114,137 @@ double CalculaMedia(double[] array)
     return media;
 }
 
-TestaArrayDeContasCorrentes();
+//TestaArrayDeContasCorrentes();
 void TestaArrayDeContasCorrentes()
 {
     ListaDeContasCorrentes listaDeContas = new ListaDeContasCorrentes();
-    //listaDeContas.Adicionar(new ContaCorrente(874, "123"));
-    //listaDeContas.Adicionar(new ContaCorrente(874, "321"));
-    //listaDeContas.Adicionar(new ContaCorrente(874, "132"));
-    //listaDeContas.Adicionar(new ContaCorrente(874, "132"));
-    //listaDeContas.Adicionar(new ContaCorrente(874, "132"));
-    //listaDeContas.Adicionar(new ContaCorrente(874, "132"));
-    ContaCorrente joao = new ContaCorrente(123, "123");
-    joao.Saldo = 10;
-    ContaCorrente amanda = new ContaCorrente(123, "123");
-    amanda.Saldo = 100;
-    ContaCorrente julia = new ContaCorrente(123, "123");
-    julia.Saldo = 5000;
+    listaDeContas.Adicionar(new ContaCorrente(874, "123"));
+    listaDeContas.Adicionar(new ContaCorrente(874, "321"));
+    listaDeContas.Adicionar(new ContaCorrente(874, "132"));
+    listaDeContas.Adicionar(new ContaCorrente(874, "132"));
+    listaDeContas.Adicionar(new ContaCorrente(874, "132"));
+    listaDeContas.Adicionar(new ContaCorrente(874, "132"));
+    //ContaCorrente joao = new ContaCorrente(123, "123");
+    //joao.Saldo = 10;
+    //ContaCorrente amanda = new ContaCorrente(123, "123");
+    //amanda.Saldo = 100;
+    //ContaCorrente julia = new ContaCorrente(123, "123");
+    //julia.Saldo = 5000;
 
-    listaDeContas.Adicionar(joao);
-    listaDeContas.Adicionar(amanda);
-    listaDeContas.Adicionar(julia);
+    //listaDeContas.Adicionar(joao);
+    //listaDeContas.Adicionar(amanda);
+    //listaDeContas.Adicionar(julia);
 
-    Console.WriteLine(listaDeContas.VerificarSaldo());
+    //Console.WriteLine(listaDeContas.VerificarSaldo());
+
+    var contaDoAndre = new ContaCorrente(963, "123456-x");
+    listaDeContas.Adicionar(contaDoAndre);
+    //listaDeContas.ExibeLista();
+    //Console.WriteLine("=========================");
+    //listaDeContas.Remover(contaDoAndre);
+    //listaDeContas.ExibeLista();
+
+    for (int i = 0; i < listaDeContas.Tamanho; i++)
+    {
+        ContaCorrente conta = listaDeContas[i];
+        Console.WriteLine($"Indice[{i}] = {conta.Conta}/{conta.Numero_agencia}");
+    }
+}
+#endregion 
+
+ArrayList listaDeContas = new ArrayList();
+
+AtendimentoCliente();
+
+void AtendimentoCliente()
+{
+    char opcao = '0';
+    while(opcao != '6')
+    {
+        Console.Clear();
+        Console.WriteLine("===============================");
+        Console.WriteLine("===       Atendimento       ===");
+        Console.WriteLine("=== 1 - Cadastrar Conta     ===");
+        Console.WriteLine("=== 2 - Listar Contas       ===");
+        Console.WriteLine("=== 3 - Remover Conta       ===");
+        Console.WriteLine("=== 4 - Ordenar Contas      ===");
+        Console.WriteLine("=== 5 - Pesquisar Conta     ===");
+        Console.WriteLine("=== 6 - Sair do Sistema     ===");
+        Console.WriteLine("===============================");
+        Console.WriteLine("\n\n");
+        Console.WriteLine("Digite a opção desejada");
+        opcao = Console.ReadLine()[0];
+        switch(opcao)
+        {
+            case '1': 
+                CadastrarConta();
+                break;
+            case '2':
+                ListarContas();
+                break;
+            default: 
+                Console.WriteLine("Opção não implementada");
+                break;
+        }
+    }
+}
+
+void ListarContas()
+{
+    Console.Clear();
+    Console.WriteLine("===============================");
+    Console.WriteLine("===     Lista de contas     ===");
+    Console.WriteLine("===============================");
+    Console.WriteLine("\n");
+
+    if (listaDeContas.Count <= 0)
+    {
+        Console.WriteLine("... Não há contas cadastradas! ...");
+        Console.ReadKey();
+        return;
+    }
+
+    foreach(ContaCorrente item in listaDeContas)
+    {
+        Console.WriteLine("===     Dados da conta      ===");
+        Console.WriteLine("Numero da conta: " + item.Conta);
+        Console.WriteLine("Titular da conta: " + item.Titular.Nome);
+        Console.WriteLine("CPF do Titular: " + item.Titular.Cpf);
+        Console.WriteLine("Profissão do Titular: " + item.Titular.Profissao);
+        Console.WriteLine("===============================");
+        Console.ReadKey();
+    }
+}
+
+void CadastrarConta()
+{
+    Console.Clear();
+    Console.WriteLine("===============================");
+    Console.WriteLine("===    Cadastro de Contas   ===");
+    Console.WriteLine("===============================");
+    Console.WriteLine("\n");
+    Console.WriteLine("=== Informe dados da conta  ===");
+    Console.WriteLine("Número da conta: ");
+    string numeroConta = Console.ReadLine();
+
+    Console.WriteLine("Número da agência: ");
+    int numeroAgencia = int.Parse(Console.ReadLine());
+
+    ContaCorrente conta = new ContaCorrente(numeroAgencia, numeroConta);
+
+    Console.WriteLine("Informe o saldo inicial: ");
+    conta.Saldo = double.Parse(Console.ReadLine());
+
+    Console.WriteLine("Informe o nome do titular: ");
+    conta.Titular.Nome = Console.ReadLine();
+
+    Console.WriteLine("Informe o CPF do titular: ");
+    conta.Titular.Cpf = Console.ReadLine();
+
+    Console.WriteLine("Informe a profissão do titular: ");
+    conta.Titular.Profissao = Console.ReadLine();
+
+    listaDeContas.Add(conta);
+    Console.WriteLine("... Conta cadastrada com sucesso! ...");
+    Console.ReadKey();
 }

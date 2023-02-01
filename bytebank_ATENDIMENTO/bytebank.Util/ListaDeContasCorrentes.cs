@@ -62,5 +62,64 @@ namespace bytebank_ATENDIMENTO.bytebank.Util
 
             return conta;
         }
+
+        public void Remover(ContaCorrente conta)
+        {
+            int indiceItem = -1;
+            for (int i = 0; i < proximaPosicao; i++)
+            {
+                ContaCorrente contaAtual = itens[i];
+                if (contaAtual == conta)
+                {
+                    indiceItem = i;
+                    break;
+                }
+            }
+
+            for (int i = indiceItem; i < proximaPosicao - 1; i++)
+            {
+                itens[i] = itens[i + 1]; 
+            }
+            proximaPosicao--;
+            itens[proximaPosicao] = null;
+        }
+
+        public void ExibeLista()
+        {
+            for (int i = 0; i < itens.Length; i++)
+            {
+                if (itens[i] != null)
+                {
+                    var conta = itens[i];
+                    Console.WriteLine($"Indice[{i}] = Conta: {conta.Conta} - n° da agência: {conta.Numero_agencia}");
+                }
+            }
+        }
+
+        public ContaCorrente RecuperarContaNoIndice(int indice)
+        {
+            if (indice < 0 || indice >= proximaPosicao)
+            {
+                throw new ArgumentOutOfRangeException(nameof(indice));
+            }
+            return itens[indice];
+        }
+
+        public int Tamanho 
+        { 
+            get 
+            {
+                return proximaPosicao;
+            }
+        }
+
+        public ContaCorrente this[int indice] 
+        {
+            get
+            {
+                return RecuperarContaNoIndice(indice);
+            }
+        }
+
     }
 }
