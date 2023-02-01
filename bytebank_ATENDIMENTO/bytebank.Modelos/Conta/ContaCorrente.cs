@@ -113,9 +113,9 @@
 
         public int CompareTo(ContaCorrente? outro)
         {
-            if (outro==null)
+            if (outro == null)
             {
-              return 1;
+                return 1;
             }
             else
             {
