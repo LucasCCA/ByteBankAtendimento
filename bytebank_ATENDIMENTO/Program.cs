@@ -229,7 +229,7 @@ void PesquisarConta()
     Console.WriteLine("===    Pesquisar contas     ===");
     Console.WriteLine("===============================");
     Console.WriteLine("\n");
-    Console.WriteLine("Deseja pesquisar por (1) NUMERO DA CONTA ou (2) CPF TITULAR ? ");
+    Console.WriteLine("Deseja pesquisar por (1) NUMERO DA CONTA ou (2) CPF TITULAR ou (3) NUMERO DA AGENCIA ? ");
 
     switch (int.Parse(Console.ReadLine()))
     {
@@ -247,38 +247,74 @@ void PesquisarConta()
             Console.WriteLine(consultaCpf.ToString());
             Console.ReadKey();
             break;
+        case 3:
+            Console.WriteLine("Informe o N° da Agência");
+            int numeroAgencia = int.Parse(Console.ReadLine());
+            var contasPorAgencia = ConsultaPorAgencia(numeroAgencia);
+            ExibirListaDeContas(contasPorAgencia);
+            Console.ReadKey();
+            break;
         default:
             Console.WriteLine("Opção não implementada");
             break;
     }
 }
 
-ContaCorrente ConsultaPorCPFTitular(string? cpf)
+void ExibirListaDeContas(List<ContaCorrente> contasPorAgencia)
 {
-    ContaCorrente conta = null;
-    for (int i = 0; i < listaDeContas.Count; i++)
+    if (contasPorAgencia == null)
     {
-        if (listaDeContas[i].Titular.Cpf.Equals(cpf))
+        Console.WriteLine("... A consulta não retornou dados ...");
+    }
+    else
+    {
+        foreach (var item in contasPorAgencia)
         {
-            conta = listaDeContas[i];
+            Console.WriteLine(item.ToString());
         }
     }
+}
 
-    return conta;
+List<ContaCorrente> ConsultaPorAgencia(int numeroAgencia)
+{
+    var consulta = (
+            from conta in listaDeContas
+            where conta.Numero_agencia == numeroAgencia
+            select conta).ToList();
+
+    return consulta;
+}
+
+ContaCorrente ConsultaPorCPFTitular(string? cpf)
+{
+    //ContaCorrente conta = null;
+    //for (int i = 0; i < listaDeContas.Count; i++)
+    //{
+    //    if (listaDeContas[i].Titular.Cpf.Equals(cpf))
+    //    {
+    //        conta = listaDeContas[i];
+    //    }
+    //}
+
+    //return conta;
+
+    return listaDeContas.Where(conta => conta.Titular.Cpf == cpf).FirstOrDefault();
 }
 
 ContaCorrente ConsultaPorNumeroConta(string? numeroConta)
 {
-    ContaCorrente conta = null;
-    for (int i = 0; i < listaDeContas.Count; i++)
-    {
-        if (listaDeContas[i].Conta.Equals(numeroConta))
-        {
-            conta = listaDeContas[i];
-        }
-    }
+    //ContaCorrente conta = null;
+    //for (int i = 0; i < listaDeContas.Count; i++)
+    //{
+    //    if (listaDeContas[i].Conta.Equals(numeroConta))
+    //    {
+    //        conta = listaDeContas[i];
+    //    }
+    //}
 
-    return conta;
+    //return conta;
+
+    return listaDeContas.Where(conta => conta.Conta == numeroConta).FirstOrDefault();
 }
 
 void OrdenarContas()
@@ -335,12 +371,13 @@ void ListarContas()
 
     foreach(ContaCorrente item in listaDeContas)
     {
-        Console.WriteLine("===     Dados da conta      ===");
-        Console.WriteLine("Numero da conta: " + item.Conta);
-        Console.WriteLine("Saldo da conta: " + item.Saldo);
-        Console.WriteLine("Titular da conta: " + item.Titular.Nome);
-        Console.WriteLine("CPF do Titular: " + item.Titular.Cpf);
-        Console.WriteLine("Profissão do Titular: " + item.Titular.Profissao);
+        //Console.WriteLine("===     Dados da conta      ===");
+        //Console.WriteLine("Numero da conta: " + item.Conta);
+        //Console.WriteLine("Saldo da conta: " + item.Saldo);
+        //Console.WriteLine("Titular da conta: " + item.Titular.Nome);
+        //Console.WriteLine("CPF do Titular: " + item.Titular.Cpf);
+        //Console.WriteLine("Profissão do Titular: " + item.Titular.Profissao);
+        Console.WriteLine(item.ToString());
         Console.WriteLine("===============================");
         Console.ReadKey();
     }
