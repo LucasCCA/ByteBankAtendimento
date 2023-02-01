@@ -1,5 +1,6 @@
 ﻿using bytebank.Modelos.Conta;
 using bytebank_ATENDIMENTO.bytebank.Atendimento;
+using bytebank_ATENDIMENTO.bytebank.Exceptions;
 using bytebank_ATENDIMENTO.bytebank.Util;
 using System.Collections;
 
@@ -152,41 +153,64 @@ void TestaArrayDeContasCorrentes()
 }
 #endregion 
 
-ArrayList listaDeContas = new ArrayList();
+//ArrayList listaDeContas = new ArrayList();
+List<ContaCorrente> listaDeContas = new List<ContaCorrente>()
+{
+    new ContaCorrente(95, "123456-X") { Saldo = 100 },
+    new ContaCorrente(95, "654321-X") { Saldo = 200 },
+    new ContaCorrente(94, "987654-X") { Saldo = 60 }
+};
 
 AtendimentoCliente();
 
 void AtendimentoCliente()
 {
-    char opcao = '0';
-    while(opcao != '6')
+    try
     {
-        Console.Clear();
-        Console.WriteLine("===============================");
-        Console.WriteLine("===       Atendimento       ===");
-        Console.WriteLine("=== 1 - Cadastrar Conta     ===");
-        Console.WriteLine("=== 2 - Listar Contas       ===");
-        Console.WriteLine("=== 3 - Remover Conta       ===");
-        Console.WriteLine("=== 4 - Ordenar Contas      ===");
-        Console.WriteLine("=== 5 - Pesquisar Conta     ===");
-        Console.WriteLine("=== 6 - Sair do Sistema     ===");
-        Console.WriteLine("===============================");
-        Console.WriteLine("\n\n");
-        Console.WriteLine("Digite a opção desejada");
-        opcao = Console.ReadLine()[0];
-        switch(opcao)
+        char opcao = '0';
+        while (opcao != '6')
         {
-            case '1': 
-                CadastrarConta();
-                break;
-            case '2':
-                ListarContas();
-                break;
-            default: 
-                Console.WriteLine("Opção não implementada");
-                break;
+            Console.Clear();
+            Console.WriteLine("===============================");
+            Console.WriteLine("===       Atendimento       ===");
+            Console.WriteLine("=== 1 - Cadastrar Conta     ===");
+            Console.WriteLine("=== 2 - Listar Contas       ===");
+            Console.WriteLine("=== 3 - Remover Conta       ===");
+            Console.WriteLine("=== 4 - Ordenar Contas      ===");
+            Console.WriteLine("=== 5 - Pesquisar Conta     ===");
+            Console.WriteLine("=== 6 - Sair do Sistema     ===");
+            Console.WriteLine("===============================");
+            Console.WriteLine("\n\n");
+            Console.WriteLine("Digite a opção desejada");
+
+            try
+            {
+                opcao = Console.ReadLine()[0];
+            }
+            catch (Exception excecao)
+            {
+                throw new ByteBankException(excecao.Message);
+            }
+            
+            switch (opcao)
+            {
+                case '1':
+                    CadastrarConta();
+                    break;
+                case '2':
+                    ListarContas();
+                    break;
+                default:
+                    Console.WriteLine("Opção não implementada");
+                    break;
+            }
         }
     }
+    catch (ByteBankException excecao)
+    {
+        Console.WriteLine($"{excecao.Message}");
+    }
+    
 }
 
 void ListarContas()
@@ -208,6 +232,7 @@ void ListarContas()
     {
         Console.WriteLine("===     Dados da conta      ===");
         Console.WriteLine("Numero da conta: " + item.Conta);
+        Console.WriteLine("Saldo da conta: " + item.Saldo);
         Console.WriteLine("Titular da conta: " + item.Titular.Nome);
         Console.WriteLine("CPF do Titular: " + item.Titular.Cpf);
         Console.WriteLine("Profissão do Titular: " + item.Titular.Profissao);
@@ -248,3 +273,98 @@ void CadastrarConta()
     Console.WriteLine("... Conta cadastrada com sucesso! ...");
     Console.ReadKey();
 }
+
+#region Exemplos de uso do List
+//Generica<int> teste1 = new Generica<int>();
+//teste1.MostrarMensagem(10);
+
+//Generica<string> teste2 = new Generica<string>();
+//teste2.MostrarMensagem("teste");
+
+//public class Generica<T>
+//{
+//    public void MostrarMensagem(T t)
+//    {
+//        Console.WriteLine($"Exibindo {t}");
+//    }
+//}
+
+//List<ContaCorrente> listaDeContas2 = new List<ContaCorrente>()
+//{
+//    new ContaCorrente(95, "123456-X"),
+//    new ContaCorrente(95, "654321-X"),
+//    new ContaCorrente(94, "987654-X")
+//};
+
+//List<ContaCorrente> listaDeContas3 = new List<ContaCorrente>()
+//{
+//    new ContaCorrente(95, "123456-X"),
+//    new ContaCorrente(95, "654321-X"),
+//    new ContaCorrente(94, "987654-X")
+//};
+
+//listaDeContas2.AddRange(listaDeContas3);
+//listaDeContas2.Reverse();
+
+//for (int i = 0; i < listaDeContas2.Count; i++)
+//{
+//    Console.WriteLine($"Indice[{i}] = Conta [{listaDeContas2[i].Conta}]");
+//}
+
+//Console.WriteLine("\n\n");
+
+//var range = listaDeContas3.GetRange(0, 1);
+
+//for (int i = 0; i < range.Count; i++)
+//{
+//    Console.WriteLine($"Indice[{i}] = Conta [{range[i].Conta}]");
+//}
+
+//Console.WriteLine("\n\n");
+
+//listaDeContas3.Clear();
+
+//for (int i = 0; i < listaDeContas3.Count; i++)
+//{
+//    Console.WriteLine($"Indice[{i}] = Conta [{listaDeContas3[i].Conta}]");
+//}
+
+//List<string> nomesDosEscolhidos = new List<string>()
+//{
+//    "Bruce Wayne",
+//    "Carlos Vilagran",
+//    "Richard Grayson",
+//    "Bob Kane",
+//    "Will Farrel",
+//    "Lois Lane",
+//    "General Welling",
+//    "Perla Letícia",
+//    "Uxas",
+//    "Diana Prince",
+//    "Elisabeth Romanova",
+//    "Anakin Wayne"
+//};
+
+//VerificaNome(nomesDosEscolhidos, "Anakin Wayne");
+//Console.WriteLine(VerificaNomeResposta(nomesDosEscolhidos, "Anakin Wayne"));
+//Console.WriteLine(VerificaNomeResposta(nomesDosEscolhidos, "teste"));
+
+//void VerificaNome(List<string> lista, string nome)
+//{
+//    foreach(string nomeEscolhido in lista)
+//    {
+//        if (nomeEscolhido == nome)
+//        {
+//            Console.WriteLine("Nome encontrado");
+//            return;
+//        }
+//    }
+
+//    Console.WriteLine("Nome não encontrado");
+//}
+
+//bool VerificaNomeResposta(List<string> lista, string nome)
+//{
+//    return lista.Contains(nome);
+//}
+#endregion
